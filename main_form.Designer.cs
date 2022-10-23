@@ -31,8 +31,11 @@ namespace LazyRename
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(main_form));
             this.menuStrip = new System.Windows.Forms.MenuStrip();
-            this.displayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.englishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.japaneseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dropbox = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -56,33 +59,55 @@ namespace LazyRename
             resources.ApplyResources(this.menuStrip, "menuStrip");
             this.menuStrip.GripMargin = new System.Windows.Forms.Padding(0);
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.displayToolStripMenuItem,
+            this.fileToolStripMenuItem,
             this.languageToolStripMenuItem,
             this.infoToolStripMenuItem});
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip_ItemClicked);
             // 
-            // displayToolStripMenuItem
+            // fileToolStripMenuItem
             // 
-            this.displayToolStripMenuItem.Name = "displayToolStripMenuItem";
-            resources.ApplyResources(this.displayToolStripMenuItem, "displayToolStripMenuItem");
+            resources.ApplyResources(this.fileToolStripMenuItem, "fileToolStripMenuItem");
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exitXToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            // 
+            // exitXToolStripMenuItem
+            // 
+            resources.ApplyResources(this.exitXToolStripMenuItem, "exitXToolStripMenuItem");
+            this.exitXToolStripMenuItem.Name = "exitXToolStripMenuItem";
+            this.exitXToolStripMenuItem.Click += new System.EventHandler(this.ExitXToolStripMenuItem_Click);
             // 
             // languageToolStripMenuItem
             // 
-            this.languageToolStripMenuItem.Name = "languageToolStripMenuItem";
             resources.ApplyResources(this.languageToolStripMenuItem, "languageToolStripMenuItem");
+            this.languageToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.englishToolStripMenuItem,
+            this.japaneseToolStripMenuItem});
+            this.languageToolStripMenuItem.Name = "languageToolStripMenuItem";
+            // 
+            // englishToolStripMenuItem
+            // 
+            resources.ApplyResources(this.englishToolStripMenuItem, "englishToolStripMenuItem");
+            this.englishToolStripMenuItem.Name = "englishToolStripMenuItem";
+            this.englishToolStripMenuItem.Click += new System.EventHandler(this.EnglishToolStripMenuItem_Click);
+            // 
+            // japaneseToolStripMenuItem
+            // 
+            resources.ApplyResources(this.japaneseToolStripMenuItem, "japaneseToolStripMenuItem");
+            this.japaneseToolStripMenuItem.Name = "japaneseToolStripMenuItem";
+            this.japaneseToolStripMenuItem.Click += new System.EventHandler(this.JapaneseToolStripMenuItem_Click);
             // 
             // infoToolStripMenuItem
             // 
-            this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
             resources.ApplyResources(this.infoToolStripMenuItem, "infoToolStripMenuItem");
+            this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
             // 
             // dropbox
             // 
+            resources.ApplyResources(this.dropbox, "dropbox");
             this.dropbox.BackColor = System.Drawing.Color.WhiteSmoke;
             this.dropbox.Controls.Add(this.label1);
             this.dropbox.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            resources.ApplyResources(this.dropbox, "dropbox");
             this.dropbox.Name = "dropbox";
             this.dropbox.TabStop = false;
             // 
@@ -93,20 +118,22 @@ namespace LazyRename
             // 
             // comboBox1
             // 
-            this.comboBox1.FormattingEnabled = true;
             resources.ApplyResources(this.comboBox1, "comboBox1");
+            this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Name = "comboBox1";
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.comboBox1);
             resources.ApplyResources(this.groupBox1, "groupBox1");
+            this.groupBox1.Controls.Add(this.comboBox1);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
             // Show_top_checkBox
             // 
             resources.ApplyResources(this.Show_top_checkBox, "Show_top_checkBox");
+            this.Show_top_checkBox.Checked = true;
+            this.Show_top_checkBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.Show_top_checkBox.Name = "Show_top_checkBox";
             this.Show_top_checkBox.UseVisualStyleBackColor = true;
             this.Show_top_checkBox.CheckedChanged += new System.EventHandler(this.Show_top_checkBox_CheckedChanged);
@@ -125,6 +152,7 @@ namespace LazyRename
             // 
             // Result_view
             // 
+            resources.ApplyResources(this.Result_view, "Result_view");
             this.Result_view.AllowUserToAddRows = false;
             this.Result_view.AllowUserToDeleteRows = false;
             this.Result_view.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -132,11 +160,10 @@ namespace LazyRename
             this.Col_before,
             this.Col_after,
             this.Col_reset});
-            resources.ApplyResources(this.Result_view, "Result_view");
             this.Result_view.Name = "Result_view";
             this.Result_view.RowHeadersVisible = false;
             this.Result_view.RowTemplate.Height = 21;
-            this.Result_view.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.result_view_CellClick);
+            this.Result_view.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Result_view_CellClick);
             // 
             // Col_before
             // 
@@ -160,8 +187,8 @@ namespace LazyRename
             // 
             // main_form
             // 
-            this.AllowDrop = true;
             resources.ApplyResources(this, "$this");
+            this.AllowDrop = true;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.Controls.Add(this.Result_view);
@@ -175,9 +202,9 @@ namespace LazyRename
             this.MainMenuStrip = this.menuStrip;
             this.Name = "main_form";
             this.TopMost = true;
-            this.Load += new System.EventHandler(this.main_form_Load);
-            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.main_form_DragDrop);
-            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.main_form_DragEnter);
+            this.Load += new System.EventHandler(this.Main_form_Load);
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Main_form_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Main_form_DragEnter);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.dropbox.ResumeLayout(false);
@@ -197,7 +224,7 @@ namespace LazyRename
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox Show_top_checkBox;
         private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.ToolStripMenuItem displayToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem languageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem infoToolStripMenuItem;
         private System.Windows.Forms.CheckBox overwrite_checkBox;
@@ -205,6 +232,9 @@ namespace LazyRename
         private System.Windows.Forms.DataGridViewTextBoxColumn Col_before;
         private System.Windows.Forms.DataGridViewTextBoxColumn Col_after;
         private System.Windows.Forms.DataGridViewButtonColumn Col_reset;
+        private System.Windows.Forms.ToolStripMenuItem englishToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem japaneseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitXToolStripMenuItem;
     }
 }
 

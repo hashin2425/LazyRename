@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Threading;
 
 namespace LazyRename
 {
@@ -18,10 +19,9 @@ namespace LazyRename
             InitializeComponent();
         }
 
-        private void main_form_DragDrop(object sender, DragEventArgs e)
+        private void Main_form_DragDrop(object sender, DragEventArgs e)
         {
-            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            foreach (string filename in files)
+            foreach (string filename in (string[])e.Data.GetData(DataFormats.FileDrop))
             {
                 string extension = Path.GetExtension(filename);
                 string directory = Path.GetDirectoryName(filename);
@@ -30,7 +30,7 @@ namespace LazyRename
                 string new_filename = directory;
                 new_filename += "\\";
                 new_filename += name;
-                new_filename += System.IO.File.GetLastWriteTime(filename).ToString("D");
+                new_filename += System.IO.File.GetLastWriteTime(filename).ToString("_yyyy-MM-dd_hhmm");
                 new_filename += extension;
                 System.IO.File.Move(filename, new_filename);
                 
@@ -38,7 +38,7 @@ namespace LazyRename
             }
         }
 
-        private void main_form_DragEnter(object sender, DragEventArgs e)
+        private void Main_form_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
@@ -51,8 +51,10 @@ namespace LazyRename
             }
         }
 
-        private void main_form_Load(object sender, EventArgs e)
+        private void Main_form_Load(object sender, EventArgs e)
         {
+            Console.WriteLine("Window Loaded");
+            Console.WriteLine(englishToolStripMenuItem.Checked);
         }
 
         private void Show_top_checkBox_CheckedChanged(object sender, EventArgs e)
@@ -60,17 +62,12 @@ namespace LazyRename
             TopMost = Show_top_checkBox.Checked;
         }
 
-        private void toolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void menuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
-
-        private void result_view_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void Result_view_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if(e.ColumnIndex == 2)
             {
@@ -83,5 +80,24 @@ namespace LazyRename
                 Result_view.Rows.RemoveAt(e.RowIndex);
             }
         }
+
+        private void ExitXToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void EnglishToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            englishToolStripMenuItem.Checked = true;
+            japaneseToolStripMenuItem.Checked = false;
+        }
+
+        private void JapaneseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            englishToolStripMenuItem.Checked = false;
+            japaneseToolStripMenuItem.Checked = true;
+
+        }
     }
 }
+
