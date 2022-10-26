@@ -124,6 +124,7 @@ namespace LazyRename
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // dropbox
             // 
@@ -191,11 +192,6 @@ namespace LazyRename
             // 
             this.Preset_box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.Preset_box.FormattingEnabled = true;
-            this.Preset_box.Items.AddRange(new object[] {
-            resources.GetString("Preset_box.Items"),
-            resources.GetString("Preset_box.Items1"),
-            resources.GetString("Preset_box.Items2"),
-            resources.GetString("Preset_box.Items3")});
             resources.ApplyResources(this.Preset_box, "Preset_box");
             this.Preset_box.Name = "Preset_box";
             this.Preset_box.SelectedIndexChanged += new System.EventHandler(this.Preset_box_SelectedIndexChanged);

@@ -73,6 +73,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
     <EmbeddedResource Include="main_form.ja.resx">
       <DependentUpon>main_form.cs</DependentUpon>
     </EmbeddedResource>

@@ -23,15 +23,12 @@ namespace LazyRename.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ja")]
+        [global::System.Configuration.DefaultSettingValueAttribute("en")]
         public string language {
             get {
                 return ((string)(this["language"]));
-            }
-            set {
-                this["language"] = value;
             }
         }
     }
