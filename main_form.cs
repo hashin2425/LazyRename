@@ -21,7 +21,7 @@ namespace LazyRename
             public string format;
             public string example;
         }
-        private List<Rename_Format> formats = new List<Rename_Format>();
+        private readonly List<Rename_Format> formats = new List<Rename_Format>();
 
         public main_form()
         {
@@ -59,22 +59,37 @@ namespace LazyRename
 
         private void Main_form_DragDrop(object sender, DragEventArgs e)
         {
-            foreach (string filename in (string[])e.Data.GetData(DataFormats.FileDrop))
+            foreach (string f in (string[])e.Data.GetData(DataFormats.FileDrop))
             {
-                string extension = Path.GetExtension(filename);
-                string directory = Path.GetDirectoryName(filename);
+                string GetExtension = Path.GetExtension(f);
+                string GetDirectoryName = Path.GetDirectoryName(f);
+                string GetFileNameWithoutExtension = Path.GetFileNameWithoutExtension(f);
+                string GetFileName = Path.GetFileName(f);
+                var GetLastWriteTime = File.GetLastWriteTime(f);
+                var GetCreationTime = File.GetCreationTime(f);
+                var GetAttributes = File.GetAttributes(f);
 
-                string new_basename = formats[Preset_box.SelectedIndex].format;
-                new_basename = new_basename.Replace("?f", Path.GetFileNameWithoutExtension(filename));
-                new_basename = new_basename.Replace("?u", File.GetLastWriteTime(filename).ToString("yyyy-MM-dd"));
-                new_basename = new_basename.Replace("?c", File.GetCreationTime(filename).ToString("yyyy-MM-dd"));
-                new_basename = new_basename.Replace("?U", File.GetLastWriteTime(filename).ToString("yyyy-MM-dd_hhmm"));
-                new_basename = new_basename.Replace("?C", File.GetCreationTime(filename).ToString("yyyy-MM-dd_hhmm"));
+                if (mode_tab.SelectedIndex == 0)
+                {
+                    // Easy mode
+                    string new_basename = formats[Preset_box.SelectedIndex].format;
+                    new_basename = new_basename.Replace("?f", GetFileNameWithoutExtension);
+                    new_basename = new_basename.Replace("?u", GetLastWriteTime.ToString("yyyy-MM-dd"));
+                    new_basename = new_basename.Replace("?c", GetCreationTime.ToString("yyyy-MM-dd"));
+                    new_basename = new_basename.Replace("?U", GetLastWriteTime.ToString("yyyy-MM-dd_hhmm"));
+                    new_basename = new_basename.Replace("?C", GetCreationTime.ToString("yyyy-MM-dd_hhmm"));
 
-                string new_filename = directory + "\\" + new_basename + extension;
-                File.Move(filename, new_filename);
+                    string new_filename = GetDirectoryName + "\\" + new_basename + GetExtension;
+                    File.Move(f, new_filename);
 
-                Result_view.Rows.Insert(0, filename, Path.GetFileName(new_filename), "Undo");
+                    Result_view.Rows.Insert(0, f, Path.GetFileName(new_filename), "Undo");
+                }
+                else if (mode_tab.SelectedIndex == 1)
+                {
+                    //Advanced mode
+                    advance_rename_table.Rows.Insert(0, "X", GetFileName, "");
+                    Console.WriteLine(GetAttributes);
+                }
             }
         }
 
@@ -105,8 +120,6 @@ namespace LazyRename
 
             Console.WriteLine(formats[1].display);
         }
-
-        private void ToolStripMenuItem_Click(object sender, EventArgs e) { }
 
         private void Result_view_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -147,12 +160,7 @@ namespace LazyRename
 
         }
 
-        private void ExampleLabel_Clicked(object sender, EventArgs e)
-        {
-
-        }
-
-        private void showTopMostToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ShowTopMostToolStripMenuItem_Click(object sender, EventArgs e)
         {
             showTopMostToolStripMenuItem.Checked = !showTopMostToolStripMenuItem.Checked;
             TopMost = !TopMost;
@@ -161,11 +169,6 @@ namespace LazyRename
         private void Preset_box_SelectedIndexChanged(object sender, EventArgs e)
         {
             Example_Label.Text = formats[Preset_box.SelectedIndex].example;
-        }
-
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
