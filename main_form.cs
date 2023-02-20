@@ -23,6 +23,36 @@ namespace LazyRename
         }
         private readonly List<Rename_Format> formats = new List<Rename_Format>();
 
+        private Dictionary<string, string> RomajiHiraDict = (Dictionary<string, string>)new Dictionary<string, string>()
+        {
+            {"a", "あ"},{ "ba", "ば"},{ "da", "だ"}, { "fa", "ふぁ"}, { "ga", "が"}, { "ha", "は"},
+            { "ja", "じゃ"}, { "ka", "か"}, { "ma", "ま"}, { "na", "な"}, { "pa", "ぱ"}, { "ra", "ら"},
+            { "sa", "さ"}, { "ta", "た"}, { "wa", "わ"}, { "ya", "や"}, { "za", "ざ"}, { "cha", "ちゃ"},
+            { "sha", "しゃ"}, { "xwa", "ゎ"}, { "n", "ん"}, { "nn", "ん"}, { "nxa", "んぁ"}, { "bya", "びゃ"},
+            { "dya", "ぢゃ"}, { "gya", "ぎゃ"}, { "hya", "ひゃ"}, { "kya", "きゃ"}, { "mya", "みゃ"},
+            { "nya", "にゃ"}, { "pya", "ぴゃ"}, { "rya", "りゃ"}, { "sya", "しゃ"}, { "tya", "ちゃ"},
+            { "zya", "じゃ"}, { "i", "い"}, { "bi", "び"}, { "di", "ぢ"}, { "fi", "ふぃ"}, { "gi", "ぎ"},
+            { "hi", "ひ"}, { "ji", "じ"}, { "ki", "き"}, { "mi", "み"}, { "ni", "に"}, { "pi", "ぴ"},
+            { "ri", "り"}, { "si", "し"}, { "ti", "ち"}, { "wi", "うぃ"}, { "zi", "じ"}, { "chi", "ち"},
+            { "shi", "し"}, { "nxi", "んぃ"}, { "dyi", "でぃ"}, { "u", "う"}, { "bu", "ぶ"}, { "du", "づ"},
+            { "fu", "ふ"}, { "gu", "ぐ"}, { "hu", "ふ"}, { "ju", "じゅ"}, { "ku", "く"}, { "mu", "む"},
+            { "nu", "ぬ"}, { "pu", "ぷ"}, { "ru", "る"}, { "su", "す"}, { "tu", "つ"}, { "yu", "ゆ"},
+            { "zu", "ず"}, { "chu", "ちゅ"}, { "shu", "しゅ"}, { "tsu", "つ"}, { "xtu", "っ"}, { "nxu", "んぅ"},
+            { "byu", "びゅ"}, { "dyu", "ぢゅ"}, { "gyu", "ぎゅ"}, { "hyu", "ひゅ"}, { "kyu", "きゅ"},
+            { "myu", "みゅ"}, { "nyu", "にゅ"}, { "pyu", "ぴゅ"}, { "ryu", "りゅ"}, { "syu", "しゅ"},
+            { "tyu", "ちゅ"}, { "zyu", "じゅ"}, { "e", "え"}, { "be", "べ"}, { "de", "で"}, { "fe", "ふぇ"},
+            { "ge", "げ"}, { "he", "へ"}, { "je", "じぇ"}, { "ke", "け"}, { "me", "め"}, { "ne", "ね"},
+            { "pe", "ぺ"}, { "re", "れ"}, { "se", "せ"}, { "te", "て"}, { "we", "うぇ"}, { "ze", "ぜ"},
+            { "che", "ちぇ"}, { "nxe", "んぇ"}, { "tye", "ちぇ"}, { "zye", "じぇ"}, { "o", "お"},
+            { "bo", "ぼ"}, { "do", "ど"}, { "fo", "ふぉ"}, { "go", "ご"}, { "ho", "ほ"},
+            { "jo", "じょ"}, { "ko", "こ"}, { "mo", "も"}, { "no", "の"}, { "po", "ぽ"},
+            { "ro", "ろ"}, { "so", "そ"}, { "to", "と"}, { "wo", "を"}, { "yo", "よ"},
+            { "zo", "ぞ"}, { "cho", "ちょ"}, { "sho", "しょ"}, { "nxo", "んぉ"}, { "byo", "びょ"},
+            { "dyo", "ぢょ"}, { "gyo", "ぎょ"}, { "hyo", "ひょ"}, { "kyo", "きょ"}, { "myo", "みょ"},
+            { "nyo", "にょ"}, { "pyo", "ぴょ"}, { "ryo", "りょ"}, { "syo", "しょ"}, { "tyo", "ちょ"},
+            { "zyo", "じょ"}, {"-", "ー"}
+        };
+
         public main_form()
         {
             // >>> Add new format here <<<
@@ -49,6 +79,18 @@ namespace LazyRename
                 display = "Add created date + time",
                 format = "?f_?C",
                 example = "example_2022-10-22_1108.txt"
+            });
+            formats.Add(new Rename_Format
+            {
+                display = "Romaji -> Hiragana",
+                format = "?rh",
+                example = "えぁｍｐぇ.txt"
+            });
+            formats.Add(new Rename_Format
+            {
+                display = "Hiragana -> Romaji",
+                format = "?hr",
+                example = "example.txt"
             });
 
             // Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Properties.Settings.Default.language);
@@ -78,6 +120,8 @@ namespace LazyRename
                     new_basename = new_basename.Replace("?c", GetCreationTime.ToString("yyyy-MM-dd"));
                     new_basename = new_basename.Replace("?U", GetLastWriteTime.ToString("yyyy-MM-dd_hhmm"));
                     new_basename = new_basename.Replace("?C", GetCreationTime.ToString("yyyy-MM-dd_hhmm"));
+                    new_basename = new_basename.Replace("?rh", Romaji2Hira(GetFileNameWithoutExtension, false));
+                    new_basename = new_basename.Replace("?hr", Romaji2Hira(GetFileNameWithoutExtension, true));
 
                     string new_filename = GetDirectoryName + "\\" + new_basename + GetExtension;
                     File.Move(f, new_filename);
@@ -107,6 +151,9 @@ namespace LazyRename
 
         private void Main_form_Load(object sender, EventArgs e)
         {
+            // temporary code here
+            //
+
             // Show window top most
             showTopMostToolStripMenuItem.Checked = true;
             TopMost = true;
@@ -170,5 +217,22 @@ namespace LazyRename
         {
             Example_Label.Text = formats[Preset_box.SelectedIndex].example;
         }
+
+        private string Romaji2Hira(string input, bool Hira2Romaji)
+        {
+            foreach (var convert_set in RomajiHiraDict.OrderByDescending(item => item.Key.Length))
+            {
+                if (Hira2Romaji)
+                {
+                    input = input.Replace(convert_set.Value, convert_set.Key);
+                }
+                else
+                {
+                    input = input.Replace(convert_set.Key, convert_set.Value);
+                }
+            }
+            return input; // ro-majiwohiragananihennkannsitehyoujisuru -> ろ-まじをひらがなにへんかんしてひょうじする
+        }
+
     }
 }
