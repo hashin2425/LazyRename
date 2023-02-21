@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Threading;
 using System.Text.RegularExpressions;
+using System.Runtime.InteropServices;
 
 namespace LazyRename
 {
@@ -22,8 +23,9 @@ namespace LazyRename
             public string example;
         }
         private readonly List<Rename_Format> formats = new List<Rename_Format>();
+        private readonly IFELanguage ife_lang = Activator.CreateInstance(Type.GetTypeFromProgID("MSIME.Japan")) as IFELanguage;
 
-        private Dictionary<string, string> RomajiHiraDict = (Dictionary<string, string>)new Dictionary<string, string>()
+        private readonly Dictionary<string, string> RomajiHiraDict = new Dictionary<string, string>()
         {
             {"a", "あ"},{ "ba", "ば"},{ "da", "だ"}, { "fa", "ふぁ"}, { "ga", "が"}, { "ha", "は"},
             { "ja", "じゃ"}, { "ka", "か"}, { "ma", "ま"}, { "na", "な"}, { "pa", "ぱ"}, { "ra", "ら"},
@@ -82,16 +84,28 @@ namespace LazyRename
             });
             formats.Add(new Rename_Format
             {
-                display = "Romaji -> Hiragana",
+                display = "ローマ字 -> ひらがな",
                 format = "?rh",
                 example = "えぁｍｐぇ.txt"
             });
             formats.Add(new Rename_Format
             {
-                display = "Hiragana -> Romaji",
+                display = "ひらがな -> ローマ字",
                 format = "?hr",
                 example = "example.txt"
             });
+
+            // IFE Interface読み込み
+            int response = ife_lang.Open();
+            if (response == 0)
+            {
+                formats.Add(new Rename_Format
+                {
+                    display = "ふりがなを付ける",
+                    format = "?ym",
+                    example = "例_れい.txt"
+                });
+            }
 
             // Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Properties.Settings.Default.language);
 
@@ -120,8 +134,9 @@ namespace LazyRename
                     new_basename = new_basename.Replace("?c", GetCreationTime.ToString("yyyy-MM-dd"));
                     new_basename = new_basename.Replace("?U", GetLastWriteTime.ToString("yyyy-MM-dd_hhmm"));
                     new_basename = new_basename.Replace("?C", GetCreationTime.ToString("yyyy-MM-dd_hhmm"));
-                    new_basename = new_basename.Replace("?rh", Romaji2Hira(GetFileNameWithoutExtension, false));
-                    new_basename = new_basename.Replace("?hr", Romaji2Hira(GetFileNameWithoutExtension, true));
+                    if (new_basename.Contains("?rh")) { new_basename = new_basename.Replace("?rh", Romaji2Hira(GetFileNameWithoutExtension, false)); }
+                    if (new_basename.Contains("?hr")) { new_basename = new_basename.Replace("?hr", Romaji2Hira(GetFileNameWithoutExtension, true)); }
+                    if (new_basename.Contains("?ym")) { new_basename = new_basename.Replace("?ym", KanjiYomi(GetFileNameWithoutExtension)); }
 
                     string new_filename = GetDirectoryName + "\\" + new_basename + GetExtension;
                     File.Move(f, new_filename);
@@ -152,6 +167,8 @@ namespace LazyRename
         private void Main_form_Load(object sender, EventArgs e)
         {
             // temporary code here
+            Console.WriteLine("今日は晴れです");
+            Console.WriteLine(KanjiYomi("今日は晴れです"));
             //
 
             // Show window top most
@@ -234,5 +251,34 @@ namespace LazyRename
             return input; // ro-majiwohiragananihennkannsitehyoujisuru -> ろ-まじをひらがなにへんかんしてひょうじする
         }
 
+        private string KanjiYomi(string kanji)
+        {
+            // 今日の天気ははれ -> きょうのてんきははれ
+
+            int response = ife_lang.GetPhonetic(kanji, 1, -1, out string yomi);
+            if (response == 0)
+            {
+                return yomi;
+            }
+            else
+            {
+                Console.WriteLine(response);
+                return "";
+            }
+        }
+    }
+
+    [ComImport]
+    [Guid("019F7152-E6DB-11d0-83C3-00C04FDDB82E")]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IFELanguage
+    {
+        int Open();
+        int Close();
+        int GetJMorphResult(uint dwRequest, uint dwCMode, int cwchInput, [MarshalAs(UnmanagedType.LPWStr)] string pwchInput, IntPtr pfCInfo, out object ppResult);
+        int GetConversionModeCaps(ref uint pdwCaps);
+        int GetPhonetic([MarshalAs(UnmanagedType.BStr)] string @string, int start, int length, [MarshalAs(UnmanagedType.BStr)] out string result);
+        int GetConversion([MarshalAs(UnmanagedType.BStr)] string @string, int start, int length, [MarshalAs(UnmanagedType.BStr)] out string result);
     }
 }
+
