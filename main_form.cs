@@ -60,25 +60,25 @@ namespace LazyRename
             // >>> Add new format here <<<
             formats.Add(new Rename_Format
             {
-                display = "Add updated date",
+                display = "末尾に更新日を追加",
                 format = "?f_?u",
                 example = "example_2022-10-22.txt"
             });
             formats.Add(new Rename_Format
             {
-                display = "Add updated date + time",
+                display = "末尾に更新日時を追加",
                 format = "?f_?U",
                 example = "example_2022-10-22_1108.txt"
             });
             formats.Add(new Rename_Format
             {
-                display = "Add created date",
+                display = "末尾に作成日を追加",
                 format = "?f_?c",
                 example = "example_2022-10-22.txt"
             });
             formats.Add(new Rename_Format
             {
-                display = "Add created date + time",
+                display = "末尾に作成日時を追加",
                 format = "?f_?C",
                 example = "example_2022-10-22_1108.txt"
             });

@@ -62,6 +62,7 @@ namespace LazyRename
             this.label2 = new System.Windows.Forms.Label();
             this.mode_tab = new System.Windows.Forms.TabControl();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.auto_number_tab = new System.Windows.Forms.TabPage();
             this.menuStrip.SuspendLayout();
             this.dropbox.SuspendLayout();
             this.advance_tab.SuspendLayout();
@@ -296,6 +297,7 @@ namespace LazyRename
             // 
             this.mode_tab.Controls.Add(this.easy_tab);
             this.mode_tab.Controls.Add(this.advance_tab);
+            this.mode_tab.Controls.Add(this.auto_number_tab);
             resources.ApplyResources(this.mode_tab, "mode_tab");
             this.mode_tab.Name = "mode_tab";
             this.mode_tab.SelectedIndex = 0;
@@ -307,6 +309,12 @@ namespace LazyRename
             this.tableLayoutPanel4.Controls.Add(this.dropbox, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.mode_tab, 1, 0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            // 
+            // auto_number_tab
+            // 
+            resources.ApplyResources(this.auto_number_tab, "auto_number_tab");
+            this.auto_number_tab.Name = "auto_number_tab";
+            this.auto_number_tab.UseVisualStyleBackColor = true;
             // 
             // main_form
             // 
@@ -375,6 +383,7 @@ namespace LazyRename
         private System.Windows.Forms.DataGridViewButtonColumn Remove;
         private System.Windows.Forms.DataGridViewTextBoxColumn name;
         private System.Windows.Forms.DataGridViewTextBoxColumn title;
+        private System.Windows.Forms.TabPage auto_number_tab;
     }
 }
 

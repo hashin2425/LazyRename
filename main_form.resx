@@ -358,7 +358,7 @@
     <value>1</value>
   </data>
   <data name="advance_tab.Text" xml:space="preserve">
-    <value>Advanced</value>
+    <value>発展</value>
   </data>
   <data name="&gt;&gt;advance_tab.Name" xml:space="preserve">
     <value>advance_tab</value>
@@ -508,7 +508,7 @@
     <value>2</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
-    <value>Example</value>
+    <value>変換例</value>
   </data>
   <data name="label3.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
@@ -544,7 +544,7 @@
     <value>1</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
-    <value>Preset</value>
+    <value>プリセット</value>
   </data>
   <data name="label2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
@@ -604,7 +604,7 @@
     <value>5</value>
   </data>
   <data name="groupBox1.Text" xml:space="preserve">
-    <value>Format</value>
+    <value>書式</value>
   </data>
   <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
     <value>groupBox1</value>
@@ -661,7 +661,7 @@
     <value>0</value>
   </data>
   <data name="easy_tab.Text" xml:space="preserve">
-    <value>Easy</value>
+    <value>簡単</value>
   </data>
   <data name="&gt;&gt;easy_tab.Name" xml:space="preserve">
     <value>easy_tab</value>
@@ -674,6 +674,33 @@
   </data>
   <data name="&gt;&gt;easy_tab.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="auto_number_tab.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="auto_number_tab.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="auto_number_tab.Size" type="System.Drawing.Size, System.Drawing">
+    <value>325, 366</value>
+  </data>
+  <data name="auto_number_tab.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="auto_number_tab.Text" xml:space="preserve">
+    <value>自動番号振り</value>
+  </data>
+  <data name="&gt;&gt;auto_number_tab.Name" xml:space="preserve">
+    <value>auto_number_tab</value>
+  </data>
+  <data name="&gt;&gt;auto_number_tab.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;auto_number_tab.Parent" xml:space="preserve">
+    <value>mode_tab</value>
+  </data>
+  <data name="&gt;&gt;auto_number_tab.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="mode_tab.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
